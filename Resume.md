@@ -49,3 +49,14 @@ Le workflow typique est le suivant:
 - Le `Triangulator` récupère le `PointSet` auprès du `PointSetManager` en lui passant le `PointSetID`
 - Le `Triangulator` réalise la triangulation
 - Le `Triangulator` répond au `Client` avec les `Triangles` issus de la triangulation
+
+## Commandes attendues
+
+Les commandes suivantes devront être configurées dans un `Makefile` :
+
+- `make test` : exécuter tous les tests ;
+- `make unit_test` : exécuter les tests hors performance ;
+- `make perf_test` : exécuter uniquement les tests marqués performance ;
+- `make coverage` : produire le rapport de couverture ;
+- `make lint` : exécuter `ruff check` ;
+- `make doc` : générer la documentation avec `pdoc3`.
