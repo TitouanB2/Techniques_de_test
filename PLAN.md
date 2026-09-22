@@ -52,7 +52,7 @@ Les tests sont organisé en 3 niveaux :
 	le `PointSet`, lance la triangulation et renvoie une réponse `200` avec le
 	type `application/octet-stream`.
 - **Composant mis en œuvre :** endpoint Flask du `Triangulator` . 
-- **Type de test :** test d'API du `PointSetManager`.
+- **Type de test :** test d'API du `Triangulator`.
 - **Nb test :** 1 pour l'endpoint `GET /triangulation/{pointSetId}`
 
 ### API-05 - Renvoyer `500` en cas d'échec de triangulation
