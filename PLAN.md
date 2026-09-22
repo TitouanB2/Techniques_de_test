@@ -53,14 +53,14 @@ Les tests sont organisé en 3 niveaux :
 	type `application/octet-stream`.
 - **Composant mis en œuvre :** endpoint Flask du `Triangulator` . 
 - **Type de test :** test d'API du `PointSetManager`.
-- **Nb test :** 1 pour l'endpoint /triangulation/{pointSetId}
+- **Nb test :** 1 pour l'endpoint `GET /triangulation/{pointSetId}`
 
 ### API-05 - Renvoyer `500` en cas d'échec de triangulation
 
 - **Objectif du test :** le test vérifie à partir d'un cas provoquant l'erreur de l'algorithme que l'algorithme envoie bien une erreur `500` à l'API 
 - **Composant mis en œuvre :** endpoint Flask du `Triangulator`
 - **Type de test :** test d'API de l'algorithme de triangulation.
-- **Nb test :** 1 pour l'endpoint /triangulation/{pointSetId}
+- **Nb test :** 1 pour l'endpoint `GET /triangulation/{pointSetId}`
  
 ### API-06 - Vérifier le format binaire de la réponse de la triangulation 
 
@@ -68,7 +68,7 @@ Les tests sont organisé en 3 niveaux :
 	décodé comme une structure `Triangles` valide.
 - **Composant mis en œuvre :** endpoint `GET /triangulation/{pointSetId}`
 - **Type de test :** test d'API du `Triangulator`
-- **Nb test :** 1 pour l'endpoint /triangulation/{pointSetId}
+- **Nb test :** 1 pour l'endpoint `GET /triangulation/{pointSetId}`
 
 ### API-07 - Vérifier la création d'un PointSetID
 
