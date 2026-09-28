@@ -85,35 +85,28 @@ Les tests sont organisé en 3 niveaux :
 	transformé en représentation binaire : nombre de points, puis coordonnées
 	`X` et `Y` sous forme de `float`.
 - **Composant mis en œuvre :** encodeur de `PointSet` - méthode `encode_point_set()`.
-- **Type de test :** test unitaire sans mock.
-- **Pourquoi :** l'encodeur ne dépend d'aucun composant externe 
+- **Type de test :** test unitaire .
 
 ### TU-BIN-02 - Décoder un ensemble de points valide
 
 - **Objectif du test :** vérifier qu'une représentation binaire valide est
 	reconvertie en une liste de points identique aux valeurs d'origine.
 - **Composant mis en œuvre :** décodeur de `PointSet` - méthode `decode_point_set()`.
-- **Type de test :** test unitaire sans mock.
-- **Pourquoi :** le décodage est une fonction déterministe qui doit être
-	vérifiée indépendamment du réseau et de l'API.
+- **Type de test :** test unitaire.
 
 ### TU-BIN-03 - Gérer un ensemble de points vide
 
 - **Objectif du test :** vérifier le comportement pour un `PointSet` contenant
 	zéro point, si ce cas est accepté par le contrat de l'application.
 - **Composant mis en œuvre :** validation et décodage de `PointSet` - méthodes `validate_point_set()` et `decode_point_set()`.
-- **Type de test :** test unitaire sans mock.
-- **Pourquoi :** ce cas limite permet de préciser le contrat et d'éviter un
-	traitement implicite ou une erreur d'indexation.
+- **Type de test :** test unitaire. 
 
 ### TU-BIN-04 - Rejeter un `PointSet` tronqué
 
 - **Objectif du test :** vérifier qu'une donnée dont la taille ne correspond pas
 	au nombre de points déclaré est rejetée proprement.
 - **Composant mis en œuvre :** validateur/décodeur de `PointSet` - méthodes `validate_point_set()` et `decode_point_set()`.
-- **Type de test :** test unitaire sans mock.
-- **Pourquoi :** la donnée est locale et le défaTU doit être détecté avant tout
-	appel au `PointSetManager` ou à l'algorithme.
+- **Type de test :** test unitaire.
 
 
 ### TU-BIN-05 - Encoder des triangles et leurs sommets
@@ -122,7 +115,7 @@ Les tests sont organisé en 3 niveaux :
 	d'abord les sommets au format `PointSet`, puis le nombre de triangles et les
 	trois indices de chaque triangle.
 - **Composant mis en œuvre :** encodeur de `Triangles` - méthode `encode_triangles()`.
-- **Type de test :** test unitaire sans mock.
+- **Type de test :** test unitaire.
 - **Pourquoi :** la strucutre binaire doit respecter exactement les contraintes qui lui sont associé .
 
 ### TU-BIN-06 - Décoder une triangulation valide
@@ -130,7 +123,7 @@ Les tests sont organisé en 3 niveaux :
 - **Objectif du test :** vérifier que les sommets et les indices des triangles
 	sont correctement récupérés à partir d'une donnée binaire valide.
 - **Composant mis en œuvre :** décodeur de `Triangles` - méthode `decode_triangles()`.
-- **Type de test :** test unitaire sans mock.
+- **Type de test :** test unitaire.
 - **Pourquoi :** le décodeur détermine si la triangulation à bien été réalisé.
 
 ### TU-BIN-07 - Rejeter un indice de sommet invalide
@@ -138,8 +131,8 @@ Les tests sont organisé en 3 niveaux :
 - **Objectif du test :** vérifier qu'un triangle faisant référence à un indice
 	qui n'existe pas dans la liste des sommets est refusé.
 - **Composant mis en œuvre :** validation de `Triangles` - méthode `validate_triangles()`.
-- **Type de test :** test unitaire sans mock.
-- **Pourquoi :** cette incohérence doit être détectée localement avant le
+- **Type de test :** test unitaire.
+- **Pourquoi :** cette incohérence doit être détectée avant le
 	renvoi d'une réponse incorrecte au client.
 
 ## 5. Tests unitaires de la triangulation
@@ -149,36 +142,29 @@ Les tests sont organisé en 3 niveaux :
 - **Objectif du test :** vérifier que trois points non alignés produisent un
 	triangle dont les indices référencent bien les trois sommets.
 - **Composant mis en œuvre :** algorithme de triangulation - méthode `triangulate()`.
-- **Type de test :** test unitaire sans mock.
-- **Pourquoi :** il s'agit du cas géométrique minimal et son résultat attendu
-	est entièrement déterministe.
+- **Type de test :** test unitaire.
+- **Pourquoi :** il s'agit du cas géométrique de base à vérifier lors d'une triangulation.
 
 ### TU-TRI-02 - Trianguler un ensemble de points connu
 
 - **Objectif du test :** vérifier les triangles produits pour un ensemble de
-	points dont la triangulation attendue est définie à l'avance.
+	points.
 - **Composant mis en œuvre :** algorithme de triangulation - méthode `triangulate()`.
-- **Type de test :** test unitaire sans mock.
-- **Pourquoi :** ce test valide la justesse du résultat sur un exemple
-	représentatif, et pas seulement l'exécution de l'algorithme.
+- **Type de test :** test unitaire.
 
 ### TU-TRI-03 - Vérifier la cohérence des indices produits
 
 - **Objectif du test :** vérifier que chaque triangle contient trois indices
 	distincts et que chaque indice appartient à l'ensemble des sommetscomposant le triangle .
 - **Composant mis en œuvre :** résultat de l'algorithme de triangulation - méthode `validate_triangulation_result()`.
-- **Type de test :** test unitaire sans mock.
-- **Pourquoi :** cette propriété est vérifiable quelle que soit la triangulation
-	choisie lorsque plusieurs résultats géométriquement valides sont possibles.
+- **Type de test :** test unitaire.
 
 ### TU-TRI-04 - Gérer un ensemble insuffisant pour trianguler
 
 - **Objectif du test :** vérifier le comportement avec zéro, un ou deux points.
 - **Composant mis en œuvre :** algorithme de triangulation et validation de
 	ses entrées - méthodes `validate_points()` et `triangulate()`.
-- **Type de test :** test unitaire sans mock.
-- **Pourquoi :** l'algorithme doit retourner un résultat vide ou une erreur
-	métier documentée, sans produire de triangle invalide.
+- **Type de test :** test unitaire.
 
 
 ## 6. Tests de performance
@@ -207,9 +193,7 @@ de pouvoir les exclure des tests habituels.
 - **Objectif du test :** vérifier que le client du `Triangulator` effecute une
 	requête `GET` vers `/pointset/{pointSetId}` et décode correctement la réponse.
 - **Composant mis en œuvre :** client HTTP du `Triangulator` - méthode `fetch_point_set()`.
-- **Type de test :** test d'intégration avec mock du service HTTP.
-- **Pourquoi :** le `PointSetManager` est un service externe ; le mock permet de
-	vérifier la requête et le traitement de sa réponse sans lancer de serveur.
+- **Type de test :** test d'intégration..
 
 ### INT-CLIENT-02 - Propager une réponse `404` du `PointSetManager`
 
@@ -223,6 +207,6 @@ de pouvoir les exclure des tests habituels.
 	réponse indisponible est convertie en erreur de service `503`.
 - **Composant mis en œuvre :** client HTTP du `Triangulator` - méthode `fetch_point_set()`.
 - **Type de test :** test d'intégration avec mock du service HTTP.
-- **Pourquoi :** ces conditions sont difficiles à provoquer de façon fiable avec
-	un véritable service ; le mock permet de les simuler de manière déterministe.
+- **Pourquoi :** ces conditions sont difficiles à provoquer de façon fiable avec;
+                 le mock permet de les simuler de manière déterministe.
 
