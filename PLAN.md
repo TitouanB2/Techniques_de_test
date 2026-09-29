@@ -15,7 +15,7 @@ Les tests sont organisé en 3 niveaux :
 - `tests/unit/test_point_set_client.py` : communication avec le
 	`PointSetManager` ;
 - `tests/api/test_triangulator_api.py` : endpoint HTTP ;
-- `tests/performance/` : mesures de performance, exclues des tests unitaires.
+- `tests/perf/` : mesures de performance, exclues des tests unitaires.
 
 ## 3. Tests d'API du `Triangulator`
 
@@ -215,7 +215,7 @@ de pouvoir les exclure des tests habituels.
 
 - **Objectif du test :** vérifier qu'un ensemble inexistant envoie une `404` pour l'API du `Triangulator`.
 - **Composant mis en œuvre :** client HTTP et gestion des erreurs - méthodes `fetch_point_set()` et `map_http_error()`.
-- **Type de test :** test d'intégration sans mock.
+- **Type de test :** test d'intégration avec mock HTTP.
 
 ### INT-CLIENT-03 - Gérer l'indisponibilité du `PointSetManager`
 

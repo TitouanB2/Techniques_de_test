@@ -8,3 +8,9 @@ select = [
     "SIM",
     "I",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "performance: tests de mesure des performances, exclus des tests unitaires",
+]
