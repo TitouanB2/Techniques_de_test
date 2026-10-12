@@ -3,12 +3,20 @@
 from unittest.mock import patch
 
 
+def _assert_error_payload(response, expected_status):
+    """Vérifie le statut HTTP et la structure d'erreur définie par l'API."""
+    assert response.status_code == expected_status
+    error = response.json
+    assert isinstance(error, dict)
+    assert isinstance(error.get("code"), str)
+    assert isinstance(error.get("message"), str)
+
+
 def test_invalid_point_set_id_returns_bad_request(client):
     """Retourne 400 lorsque l'identifiant n'est pas un UUID."""
     response = client.get("/triangulation/not-a-uuid")
 
-    assert response.status_code == 400
-    assert {"code", "message"} <= response.json.keys()
+    _assert_error_payload(response, 400)
 
 
 def test_missing_point_set_returns_not_found(client):
@@ -18,8 +26,7 @@ def test_missing_point_set_returns_not_found(client):
     with patch("triangulator.api.fetch_point_set", side_effect=PointSetNotFound):
         response = client.get("/triangulation/123e4567-e89b-12d3-a456-426614174000")
 
-    assert response.status_code == 404
-    assert {"code", "message"} <= response.json.keys()
+    _assert_error_payload(response, 404)
 
 
 def test_unavailable_point_set_manager_returns_service_unavailable(client):
@@ -32,8 +39,7 @@ def test_unavailable_point_set_manager_returns_service_unavailable(client):
     ):
         response = client.get("/triangulation/123e4567-e89b-12d3-a456-426614174000")
 
-    assert response.status_code == 503
-    assert {"code", "message"} <= response.json.keys()
+    _assert_error_payload(response, 503)
 
 
 def test_triangulation_failure_returns_internal_server_error(client):
@@ -50,8 +56,7 @@ def test_triangulation_failure_returns_internal_server_error(client):
     ):
         response = client.get("/triangulation/123e4567-e89b-12d3-a456-426614174000")
 
-    assert response.status_code == 500
-    assert {"code", "message"} <= response.json.keys()
+    _assert_error_payload(response, 500)
 
 
 def test_successful_triangulation_returns_binary_triangles(client):
@@ -68,4 +73,3 @@ def test_successful_triangulation_returns_binary_triangles(client):
     assert vertices == points
     assert len(triangles) == 1
     assert set(triangles[0]) == {0, 1, 2}
-
