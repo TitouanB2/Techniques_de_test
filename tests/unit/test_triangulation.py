@@ -4,7 +4,7 @@ import pytest
 
 
 def test_triangulates_three_non_collinear_points():
-    """Le cas minimal non dégénéré doit produire un triangle."""
+    """Le cas doit produire un triangle."""
     from triangulator.triangulation import triangulate
 
     result = triangulate([(0.0, 0.0), (1.0, 0.0), (0.0, 1.0)])
@@ -14,6 +14,16 @@ def test_triangulates_three_non_collinear_points():
 
     # Les trois sommets du triangle doivent référencer les trois points fournis.
     assert set(result[0]) == {0, 1, 2}
+
+
+def test_rejects_three_collinear_points():
+    """Rejette trois points alignés, qui ne peuvent pas former un triangle."""
+    from triangulator.triangulation import triangulate
+
+    points = [(0.0, 0.0), (1.0, 1.0), (2.0, 2.0)]
+
+    with pytest.raises(ValueError):
+        triangulate(points)
 
 
 def test_triangulates_square_without_gaps_or_overlaps():
@@ -60,4 +70,3 @@ def test_insufficient_points_produce_no_triangles(points):
     from triangulator.triangulation import triangulate
 
     assert triangulate(points) == []
-

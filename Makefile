@@ -7,7 +7,7 @@ unit_test:
 	pytest -m "not performance"
 
 perf_test:
-	pytest -m performance
+	pytest -m performance -s
 
 coverage:
 	coverage run -m pytest -m "not performance"

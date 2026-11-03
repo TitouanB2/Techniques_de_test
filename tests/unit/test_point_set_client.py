@@ -67,6 +67,26 @@ def test_fetch_point_set_maps_network_failure():
     with patch(
         "urllib.request.urlopen", side_effect=URLError("connection refused")
     ), pytest.raises(PointSetManagerUnavailable):
+        # Vérifie que le client transforme erreur réseau en erreur métier.
+        fetch_point_set(
+            "123e4567-e89b-12d3-a456-426614174000",
+            "http://point-set-manager",
+        )
+
+
+def test_fetch_point_set_maps_timeout():
+    """Traduit un délai dépassé en indisponibilité du service distant."""
+    from triangulator.point_set_client import (
+        PointSetManagerUnavailable,
+        fetch_point_set,
+    )
+
+    # Simule un délai dépassé sans attendre une vraie requête réseau.
+    with patch(
+        "urllib.request.urlopen",
+        side_effect=TimeoutError("request timed out"),
+    ), pytest.raises(PointSetManagerUnavailable):
+        # Vérifie que le délai dépassé devient une erreur d'indisponibilité.
         fetch_point_set(
             "123e4567-e89b-12d3-a456-426614174000",
             "http://point-set-manager",
