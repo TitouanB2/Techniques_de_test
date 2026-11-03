@@ -38,14 +38,11 @@ def test_binary_conversion_performance(size_name, point_count):
         encode_triangles,
     )
 
-    # Des coordonnées simples et distinctes rendent les données reproductibles grace au modulo 101.
+    # Le modulo 101 rend les coordonnées reproductibles et bornées.
     points = [(float(index), float(index % 101)) for index in range(point_count)]
 
     # Construire une suite de triangles valides pour mesurer aussi leur format.
-    triangles = [
-        (0, index, index + 1)
-        for index in range(1, point_count - 1)
-    ]
+    triangles = [(0, index, index + 1) for index in range(1, point_count - 1)]
 
     point_set_data = encode_point_set(points)
     triangles_data = encode_triangles(points, triangles)
@@ -88,7 +85,8 @@ def test_triangulation_performance(size_name, point_count):
     """Mesure la durée de triangulation pour des ensembles de tailles variées."""
     from triangulator.triangulation import triangulate
 
-    # Les points sont répartis sur un cercle avec un rayon variant légèrement pour éviter la colinéarité (que les points soient alignés).
+    # Les points suivent un cercle dont le rayon varie légèrement.
+    # Cela évite de placer tous les points sur une même droite.
     points = []
     for index in range(point_count):
         angle = 2 * pi * index / point_count

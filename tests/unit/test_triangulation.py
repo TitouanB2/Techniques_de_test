@@ -8,7 +8,7 @@ def test_triangulates_three_non_collinear_points():
     from triangulator.triangulation import triangulate
 
     result = triangulate([(0.0, 0.0), (1.0, 0.0), (0.0, 1.0)])
-    
+
     # Vérifie que le résultat contient exactement un triangle.
     assert len(result) == 1
 
@@ -51,19 +51,19 @@ def test_triangulation_indices_are_valid_and_distinct():
     points = [(0.0, 0.0), (2.0, 0.0), (2.0, 2.0), (0.0, 2.0), (1.0, 1.0)]
     triangles = triangulate(points)
 
-    #la liste des triangles triangulés n'est pas vide 
+    # la liste des triangles triangulés n'est pas vide
     assert triangles
 
     for triangle in triangles:
         # Chaque triangle a trois indices (sommets)
         assert len(triangle) == 3
-        #chaques indices sont distincts
+        # chaques indices sont distincts
         assert len(set(triangle)) == 3
         # Les indices existent dans la liste des points fournis
         assert all(0 <= index < len(points) for index in triangle)
 
 
-#change la valeur de points et relance le test pour chaque cas (0, 1 ou 2 points) : aucun triangle ne peut être formé.
+# Aucun triangle ne peut être formé avec zéro, un ou deux points.
 @pytest.mark.parametrize("points", [[], [(0.0, 0.0)], [(0.0, 0.0), (1.0, 1.0)]])
 def test_insufficient_points_produce_no_triangles(points):
     """Zéro, un ou deux points ne suffisent pas à former un triangle."""

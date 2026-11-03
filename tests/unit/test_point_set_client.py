@@ -48,8 +48,9 @@ def test_fetch_point_set_maps_not_found_response():
         "http://point-set-manager/pointset/missing", 404, "Not found", {}, None
     )
     # Simule une réponse HTTP 404 du serveur distant
-    with patch("urllib.request.urlopen", side_effect=error), pytest.raises(
-        PointSetNotFound
+    with (
+        patch("urllib.request.urlopen", side_effect=error),
+        pytest.raises(PointSetNotFound),
     ):
         fetch_point_set(
             "123e4567-e89b-12d3-a456-426614174000",
@@ -63,10 +64,12 @@ def test_fetch_point_set_maps_network_failure():
         PointSetManagerUnavailable,
         fetch_point_set,
     )
+
     # Simule une erreur réseau
-    with patch(
-        "urllib.request.urlopen", side_effect=URLError("connection refused")
-    ), pytest.raises(PointSetManagerUnavailable):
+    with (
+        patch("urllib.request.urlopen", side_effect=URLError("connection refused")),
+        pytest.raises(PointSetManagerUnavailable),
+    ):
         # Vérifie que le client transforme erreur réseau en erreur métier.
         fetch_point_set(
             "123e4567-e89b-12d3-a456-426614174000",
@@ -82,10 +85,13 @@ def test_fetch_point_set_maps_timeout():
     )
 
     # Simule un délai dépassé sans attendre une vraie requête réseau.
-    with patch(
-        "urllib.request.urlopen",
-        side_effect=TimeoutError("request timed out"),
-    ), pytest.raises(PointSetManagerUnavailable):
+    with (
+        patch(
+            "urllib.request.urlopen",
+            side_effect=TimeoutError("request timed out"),
+        ),
+        pytest.raises(PointSetManagerUnavailable),
+    ):
         # Vérifie que le délai dépassé devient une erreur d'indisponibilité.
         fetch_point_set(
             "123e4567-e89b-12d3-a456-426614174000",

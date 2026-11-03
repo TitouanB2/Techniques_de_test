@@ -16,8 +16,9 @@ def test_point_set_round_trip():
 
 
 def test_encode_point_set_matches_reference_bytes():
-    """Vérifie l'encodage d'un PointSet avec des octets de référence en Little-Endian."""
+    """Compare l'encodage d'un PointSet à des octets de référence."""
     from triangulator.binary import encode_point_set
+
     points = [(1.0, -2.5)]
     # Structure attendue :
     # - 1 triangle (unsigned long, 4 octets) : \x01\x00\x00\x00 -> 01000000
@@ -67,7 +68,7 @@ def test_triangles_round_trip():
 
     encoded = encode_triangles(points, triangles)
 
-    # Vérifie que la taille de l'encodage correspond à la structure attendue : 
+    # Vérifie que la taille de l'encodage correspond à la structure attendue :
     #   4 octets pour le nombre de points
     #   8 octets par point
     #   4 octets pour le nombre de triangles
@@ -78,19 +79,20 @@ def test_triangles_round_trip():
 
 
 def test_encode_triangles_matches_reference_bytes():
-    """Vérifie l'encodage complet (Sommets + Triangles) face à des octets de référence."""
+    """Compare l'encodage des triangles à des octets de référence."""
     from triangulator.binary import encode_triangles
+
     points = [(0.0, 0.0), (1.0, 0.0), (0.0, 1.0)]
     triangles = [(0, 1, 2)]
 
     # Construction méthodique de la référence (Little-Endian) :
     expected_bytes = bytes.fromhex(
-        "03000000"              # Part 1: Nombre de points (3) - Unsigned Long (4 octets)
-        "0000000000000000"      # Point 0 : X=0.0 (00000000), Y=0.0 (00000000)
-        "0000803f00000000"      # Point 1 : X=1.0 (0000803f), Y=0.0 (00000000)
-        "000000000000803f"      # Point 2 : X=0.0 (00000000), Y=1.0 (0000803f)
-        "01000000"              # Part 2: Nombre de triangles (1) - Unsigned Long (4 octets)
-        "000000000100000002000000" # Triangle 0 : Indices (0, 1, 2) - 3 x Unsigned Long (12 octets)
+        "03000000"  # Part 1: nombre de points
+        "0000000000000000"  # Point 0 : X=0.0 (00000000), Y=0.0 (00000000)
+        "0000803f00000000"  # Point 1 : X=1.0 (0000803f), Y=0.0 (00000000)
+        "000000000000803f"  # Point 2 : X=0.0 (00000000), Y=1.0 (0000803f)
+        "01000000"  # Part 2: nombre de triangles
+        "000000000100000002000000"  # Triangle 0 : indices (0, 1, 2)
     )
 
     assert encode_triangles(points, triangles) == expected_bytes
